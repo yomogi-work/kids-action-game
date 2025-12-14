@@ -57,17 +57,25 @@ function startGame() {
 
   // ===== ママ生成 =====
   function spawnBottomBoss() {
-    bosses.push({ x: 300, y: 280, vx: -3, vy: 0 });
+  bosses.push({
+    x: 300,
+    y: 280,
+    vx: -3,
+    vy: 0,
+    hp: 3   // ★追加
+  });
+}
   }
 
   function spawnTopBoss() {
-    bosses.push({
-      x: Math.random() * 200 + 50,
-      y: -140,
-      vx: 0,
-      vy: 3
-    });
-  }
+  bosses.push({
+    x: Math.random() * 200 + 50,
+    y: -140,
+    vx: 0,
+    vy: 3,
+    hp: 3   // ★追加
+  });
+}
 
   // ===== メインループ =====
   function update() {
@@ -111,6 +119,10 @@ function startGame() {
         ctx.drawImage(bossImg, b.x, b.y, 50, 120);
       }
 
+// HPバー表示
+ctx.fillStyle = "red";
+ctx.fillRect(b.x, b.y - 8, b.hp * 15, 5);
+
       // 犬と接触
       if (
         dog.x < b.x + 50 &&
@@ -122,18 +134,25 @@ function startGame() {
         location.reload();
       }
 
-      // 犬の弾ヒット → 怒る
-      bullets.forEach((bu, i) => {
-        if (
-          bu.x > b.x &&
-          bu.x < b.x + 50 &&
-          bu.y > b.y &&
-          bu.y < b.y + 120
-        ) {
-          bullets.splice(i, 1);
-          angryTimer = 180; // 約3秒怒る
-        }
-      });
+// 犬の弾ヒット → HP減少
+bullets.forEach((bu, i) => {
+  if (
+    bu.x > b.x &&
+    bu.x < b.x + 50 &&
+    bu.y > b.y &&
+    bu.y < b.y + 120
+  ) {
+    bullets.splice(i, 1);
+
+    b.hp--;            // ★HPを減らす
+    angryTimer = 180;  // 怒る
+
+    if (b.hp <= 0) {   // ★倒れたら消す
+      bosses.splice(bi, 1);
+      score += 5;
+    }
+  }
+});
 
       // 怒り中：反撃弾
       if (angryTimer > 0 && frame % 30 === 0) {
