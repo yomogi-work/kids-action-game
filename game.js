@@ -7,7 +7,7 @@ const bossImg = new Image();
 const bossAngryImg = new Image();
 
 dogImg.src = "2E9A0C29-5DBB-40D6-93EA-3D88B5FBCBD1.png";
-bossImg.src = "boss.png";
+bossImg.src = "DA1EA695-9BC6-4BBA-ABC4-596E0E9207AE.png";
 bossAngryImg.src = "boss_angry.jpeg";
 
 // ===== 読み込み待ち =====
