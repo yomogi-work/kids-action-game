@@ -1,3 +1,9 @@
+const dogImg = new Image();
+dogImg.src = "dog.png";
+
+const bossImg = new Image();
+bossImg.src = "boss.png";
+
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
@@ -19,21 +25,20 @@ function update() {
   // キャラ
   velocity += gravity;
   y += velocity;
-  ctx.fillRect(50, y, 20, 20);
-
+  ctx.drawImage(2E9A0C29-5DBB-40D6-93EA-3D88B5FBCBD1.png, 40, y, 40, 40); 
   // 障害物
   obstacleX -= 3;
   if (obstacleX < -20) {
     obstacleX = 300;
     score++;
   }
-  ctx.fillRect(obstacleX, 300, 20, 100);
+  ctx.drawImage(DA1EA695-9BC6-4BBA-ABC4-596E0E9207AE.png, obstacleX, 280, 50, 120);
 
   // 当たり判定
   if (
-    50 < obstacleX + 20 &&
-    50 + 20 > obstacleX &&
-    y + 20 > 300
+  40 < obstacleX + 50 &&
+  40 + 40 > obstacleX &&
+  y + 40 > 280
   ) {
     alert("ゲームオーバー！ スコア：" + score);
     location.reload();
