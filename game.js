@@ -1,3 +1,12 @@
+bossAngryImg.onerror = () => {
+  console.error("怒ったママ画像が読み込めていません");
+};
+dogImg.onerror = () => {
+  console.error("犬画像が読み込めていません");
+};
+bossImg.onerror = () => {
+  console.error("普通ママ画像が読み込めていません");
+};
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
