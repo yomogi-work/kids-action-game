@@ -2,11 +2,139 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>ジャンプゲーム</title>
-  <link rel="stylesheet" href="style.css">
+  <title>キッズアクションゲーム</title>
+  <style>
+    body { margin: 0; text-align: center; background: #eef; }
+    canvas { background: #fff; border: 1px solid #aaa; }
+  </style>
 </head>
 <body>
-  <canvas id="game" width="300" height="400"></canvas>
-  <script src="game.js"></script>
+
+<h3>タップでジャンプ＆攻撃</h3>
+<canvas id="game" width="320" height="400"></canvas>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+// ===== 画像 =====
+const dogImg = new Image();
+const bossImg = new Image();
+const bossAngryImg = new Image();
+
+dogImg.src = "2E9A0C29-5DBB-40D6-93EA-3D88B5FBCBD1.png";
+bossImg.src = "DA1EA695-9BC6-4BBA-ABC4-596E0E9207AE.png";
+bossAngryImg.src = "boss_angry.jpeg";
+
+// ===== 読み込み待ち =====
+let loaded = 0;
+[dogImg, bossImg, bossAngryImg].forEach(img => {
+  img.onload = () => {
+    loaded++;
+    if (loaded === 3) startGame();
+  };
+});
+
+function startGame() {
+
+  const dog = { x: 40, y: 340, vx: 0, vy: 0 };
+  const gravity = 0.6;
+
+  let bosses = [];
+  let bullets = [];
+  let enemyBullets = [];
+
+  let frame = 0;
+  let score = 0;
+
+  canvas.addEventListener("touchstart", e => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.touches[0].clientX - rect.left;
+    dog.vx = x < canvas.width / 2 ? -4 : 4;
+    dog.vy = -9;
+    bullets.push({ x: dog.x + 40, y: dog.y + 20 });
+  });
+
+  canvas.addEventListener("touchend", () => dog.vx = 0);
+
+  function spawnBoss(y, vx, vy) {
+    bosses.push({ x: 300, y, vx, vy, hp: 3, angry: 0 });
+  }
+
+  function update() {
+    frame++;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // 犬
+    dog.vy += gravity;
+    dog.x += dog.vx;
+    dog.y += dog.vy;
+    if (dog.y > 360) dog.y = 360;
+    if (dog.x < 0) dog.x = 0;
+    if (dog.x > 280) dog.x = 280;
+    ctx.drawImage(dogImg, dog.x, dog.y, 40, 40);
+
+    // 弾
+    bullets.forEach(b => {
+      b.x += 6;
+      ctx.beginPath();
+      ctx.arc(b.x,b.y,5,0,Math.PI*2);
+      ctx.fillStyle="gold";
+      ctx.fill();
+    });
+    bullets = bullets.filter(b => b.x < 340);
+
+    if (frame % 120 === 0) spawnBoss(280,-2.5,0);
+    if (frame % 300 === 0) spawnBoss(-140,0,2.5);
+
+    // ママ
+    for (let i = bosses.length-1; i>=0; i--) {
+      const b = bosses[i];
+      b.x += b.vx; b.y += b.vy;
+
+      ctx.drawImage(
+        b.angry>0 ? bossAngryImg : bossImg,
+        b.x,b.y,
+        b.angry>0?60:50,
+        b.angry>0?140:120
+      );
+
+      ctx.fillStyle="red";
+      ctx.fillRect(b.x,b.y-8,b.hp*15,5);
+
+      for (let j = bullets.length-1; j>=0; j--) {
+        const bu = bullets[j];
+        if (bu.x>b.x && bu.x<b.x+50 && bu.y>b.y && bu.y<b.y+120) {
+          bullets.splice(j,1);
+          b.hp--; b.angry=120;
+          if (b.hp<=0) { bosses.splice(i,1); score+=5; break; }
+        }
+      }
+
+      if (b.angry>0 && frame%40===0) {
+        enemyBullets.push({x:b.x,y:b.y+60});
+        b.angry--;
+      }
+    }
+
+    // 敵弾
+    enemyBullets.forEach(e=>{
+      e.x-=4;
+      ctx.beginPath();
+      ctx.arc(e.x,e.y,6,0,Math.PI*2);
+      ctx.fillStyle="red";
+      ctx.fill();
+    });
+    enemyBullets = enemyBullets.filter(e=>e.x>-20);
+
+    ctx.fillStyle="black";
+    ctx.fillText("SCORE: "+score,10,20);
+
+    requestAnimationFrame(update);
+  }
+
+  update();
+}
+</script>
 </body>
 </html>
