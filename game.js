@@ -8,7 +8,7 @@ const bossAngryImg = new Image();
 
 dogImg.src = "dog.png";
 bossImg.src = "boss.png";
-bossAngryImg.src = "boss_angry.png";
+bossAngryImg.src = "boss_angry.png.jpeg";
 
 // ===== 読み込み待ち =====
 let loaded = 0;
