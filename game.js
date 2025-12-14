@@ -6,7 +6,7 @@ const dogImg = new Image();
 const bossImg = new Image();
 const bossAngryImg = new Image();
 
-dogImg.src = "dog.png";
+dogImg.src = "2E9A0C29-5DBB-40D6-93EA-3D88B5FBCBD1.png";
 bossImg.src = "boss.png";
 bossAngryImg.src = "boss_angry.jpeg";
 
