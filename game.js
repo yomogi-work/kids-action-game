@@ -1,8 +1,8 @@
 const dogImg = new Image();
-dogImg.src = "dog.png";
+dogImg.src = "2E9A0C29-5DBB-40D6-93EA-3D88B5FBCBD1.png";
 
 const bossImg = new Image();
-bossImg.src = "boss.png";
+bossImg.src = "DA1EA695-9BC6-4BBA-ABC4-596E0E9207AE.png";
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
@@ -25,14 +25,14 @@ function update() {
   // キャラ
   velocity += gravity;
   y += velocity;
-  ctx.drawImage(2E9A0C29-5DBB-40D6-93EA-3D88B5FBCBD1.png, 40, y, 40, 40); 
+  ctx.drawImage(dogImg, 40, y, 40, 40); 
   // 障害物
   obstacleX -= 3;
   if (obstacleX < -20) {
     obstacleX = 300;
     score++;
   }
-  ctx.drawImage(DA1EA695-9BC6-4BBA-ABC4-596E0E9207AE.png, obstacleX, 280, 50, 120);
+  ctx.drawImage(bossImg, obstacleX, 280, 50, 120);
 
   // 当たり判定
   if (
