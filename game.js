@@ -65,7 +65,7 @@ function startGame() {
     hp: 3   // ★追加
   });
 }
-  }
+  
 
   function spawnTopBoss() {
   bosses.push({
